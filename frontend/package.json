@@ -1,22 +1,36 @@
 {
   "name": "frontend",
+  "version": "0.0.1",
+  "description": "A app to share school supplies",
+  "productName": "School supplies exchange",
+  "author": "nhat191024 <richberchannel01@gmail.com>",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "lint": "eslint --ext .js,.vue ./",
+    "format": "prettier --write \"**/*.{js,vue,css,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0",
+    "dev": "quasar dev",
+    "build": "quasar build"
   },
   "dependencies": {
-    "@quasar/extras": "^1.16.12",
-    "quasar": "^2.17.0",
-    "vue": "^3.5.10"
+    "@quasar/extras": "^1.16.4",
+    "quasar": "^2.16.0",
+    "vue": "^3.4.18",
+    "vue-router": "^4.0.12"
   },
   "devDependencies": {
-    "@quasar/vite-plugin": "^1.7.0",
-    "@vitejs/plugin-vue": "^5.1.4",
-    "sass": "^1.33.0",
-    "vite": "^5.4.8"
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "vite-plugin-checker": "^0.8.0",
+    "eslint-config-prettier": "^8.1.0",
+    "prettier": "^2.5.1",
+    "@quasar/app-vite": "^1.9.0",
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.14"
+  },
+  "engines": {
+    "node": "^20 || ^18 || ^16",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
   }
 }
