@@ -7,59 +7,35 @@ use Illuminate\Http\Request;
 
 class BillController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $bill = Bill::create($request->all());
+        return response()->json($bill, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Bill $bill)
+    public function index()
     {
-        //
+        $bills = Bill::all();
+        return response()->json($bills);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Bill $bill)
+    public function show($id)
     {
-        //
+        $bill = Bill::findOrFail($id);
+        return response()->json($bill);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Bill $bill)
+    public function update(Request $request, $id)
     {
-        //
+        $bill = Bill::findOrFail($id);
+        $bill->update($request->all());
+        return response()->json($bill);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Bill $bill)
+    public function destroy($id)
     {
-        //
+        $bill = Bill::findOrFail($id);
+        $bill->delete();
+        return response()->json(null, 204);
     }
 }

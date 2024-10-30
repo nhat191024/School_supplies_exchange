@@ -4,62 +4,61 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images', 'public');
+            $data['image'] = $path;
+        }
+
+        $product = Product::create($data);
+
+        return response()->json($product, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
+    public function index()
     {
-        //
+        $products = Product::all();
+        return response()->json($products);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
+    public function show($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return response()->json($product);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            // Xóa ảnh cũ nếu có
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+
+            $path = $request->file('image')->store('images', 'public');
+            $data['image'] = $path;
+        }
+
+        $product->update($data);
+
+        return response()->json($product);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return response()->json(null, 204);
     }
 }
