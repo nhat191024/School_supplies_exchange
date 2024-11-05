@@ -1,43 +1,30 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+      <q-toolbar class="bg-red-10 text-white shadow-2">
+        <q-input bg-color="white" color="red" outlined rounded standout v-model="text" placeholder="Placeholder"
+          class="q-my-sm">
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
+        <q-space />
 
-        <div>Quasar v{{ $q.version }}</div>
+        <q-icon name="notifications" size="2rem" />
+        <q-space />
+        <q-icon name="forum" size="1.7rem" />
+
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
+    <q-footer class="bg-red-10 footer" :elevated="true" :class="{ 'q-footer--fixed': true }">
+      <q-tabs v-model="tab" dense class="text-white footer-tab-container" justify="between">
+        <q-tab name="home" icon="home" label="Trang chủ" @click="goTo('home')" />
+        <q-tab name="post" icon="edit_square" label="Đăng bài" class="footer-tab-post-btn" @click="goTo('post')" />
+        <q-tab name="user" icon="account_circle" label="Tài khoản" @click="goTo('profile')" />
+      </q-tabs>
+    </q-footer>
 
     <q-page-container>
       <router-view />
@@ -47,60 +34,26 @@
 
 <script setup>
 import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { useRouter } from 'vue-router'
+
+const tab = ref('home')
+const router = useRouter()
+
+function goTo(tabName) {
+  switch (tabName) {
+    case 'home':
+      router.push('/')
+      break
+    case 'post':
+      router.push('/post-product')
+      break
+    case 'profile':
+      router.push('/profile')
+      break
+  }
+}
 
 defineOptions({
   name: 'MainLayout'
 })
-
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
-
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
 </script>
