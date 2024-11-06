@@ -15,7 +15,7 @@ class BillController extends Controller
 
     public function index()
     {
-        $bills = Bill::all();
+        $bills = Bill::with(['buyer', 'seller', 'product'])->get();
         return response()->json($bills);
     }
 

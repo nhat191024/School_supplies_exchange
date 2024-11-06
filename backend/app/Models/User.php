@@ -44,5 +44,36 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+
+    }
+
+    // Quan hệ với Product
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    // Quan hệ với Bill
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
+    }
+
+    // Quan hệ với Review
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    // Quan hệ với Bill qua buyer_id
+    public function purchases()
+    {
+        return $this->hasMany(Bill::class, 'buyer_id');
+    }
+
+    // Quan hệ với Bill qua seller_id
+    public function sales()
+    {
+        return $this->hasMany(Bill::class, 'seller_id');
     }
 }

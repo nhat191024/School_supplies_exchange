@@ -15,4 +15,16 @@ class Review extends Model
         'rating',      // Đánh giá, ví dụ: 1 - 5
         'comment'      // Nội dung bình luận đánh giá
     ];
+
+    // Quan hệ với Product
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    // Quan hệ với User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
