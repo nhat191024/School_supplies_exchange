@@ -10,10 +10,25 @@ class Bill extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'total_amount',
-        'status',          // Ví dụ: "paid", "pending", "completed"
-        'payment_method',   // Ví dụ: "cash on delivery", "online payment"
-        'shipping_address'  // Địa chỉ giao hàng
+        'buyer_id',
+        'seller_id',
+        'product_id',
     ];
+
+    // Quan hệ với User qua buyer_id
+    public function buyer()
+    {
+        return $this->belongsTo(User::class, 'buyer_id');
+    }
+
+    // Quan hệ với User qua seller_id
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'seller_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

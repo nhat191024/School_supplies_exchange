@@ -13,4 +13,10 @@ class Category extends Model
         'name',        // Tên của danh mục, ví dụ: "Sách", "Dụng cụ học tập"
         'description'  // Mô tả về danh mục
     ];
+
+    // Quan hệ với Product
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
