@@ -35,4 +35,38 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Logged out successfully']);
     }
+
+    public function me(Request $request)
+    {
+        return response()->json($request->user());
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Xác thực người dùng đang đăng nhập (bắt buộc token)
+        $user = User::findOrFail($id);
+
+        if (auth()->id() !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        // Validate dữ liệu
+        $request->validate([
+            'name' => 'string|max:255',
+            'email' => 'email|max:255|unique:users,email,' . $id,
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        // Cập nhật dữ liệu người dùng
+        $user->update([
+            'name' => $request->input('name', $user->name),
+            'email' => $request->input('email', $user->email),
+            'password' => $request->password ? Hash::make($request->password) : $user->password,
+        ]);
+
+        return response()->json([
+            'message' => 'User updated successfully',
+            'user' => $user,
+        ]);
+    }
 }

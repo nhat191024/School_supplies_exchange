@@ -16,8 +16,9 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-
+Route::middleware('auth:sanctum')->get('/me', [AuthController::class, 'me']);
 Route::apiResource('users', UserController::class);
+Route::post('/users/profile', [UserController::class, 'update'])->middleware('auth:sanctum');
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);
 Route::apiResource('bills', BillController::class);
