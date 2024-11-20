@@ -1,1 +1,48 @@
 /* app global css */
+body {
+    font-family: 'Lexend';
+}
+
+.footer {
+    display: flex;
+}
+
+.footer-btn {
+    display: flex;
+    justify-content: center;
+}
+
+.footer-tab-container {
+    width: 100%;
+}
+
+.category-container {
+    display: flex;
+    overflow: scroll;
+    gap: 10px;
+    margin: 10px 10px 10px 10px;
+}
+
+.category-btn {
+    font-size: large;
+    outline: black;
+    outline-width: 1px;
+    outline-style: solid;
+    display: flex;
+    text-align: center;
+}
+
+.product-text-title {
+    font-size: large;
+    font-weight: bold;
+    margin: 10px 10px 10px 10px;
+}
+
+.product-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 20px;
+    margin: 10px 10px 10px 10px;
+}
+
+/* product detail */
