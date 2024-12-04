@@ -1,10 +1,6 @@
 <template>
     <div class="category-container">
         <div class="category-item" v-for="(cat, index) in modelValue" :key="index">
-            <!-- <div class="category-btn">
-                <q-icon :name="cat.icon" class="q-mr-sm" />
-                <span>{{ cat.name }}</span>
-            </div> -->
             <q-btn push color="red-10" class="q-py-sm">
                 <div class="row items-center no-wrap">
                     <q-icon size="2em" :name="cat.icon" class="q-mr-sm" />
