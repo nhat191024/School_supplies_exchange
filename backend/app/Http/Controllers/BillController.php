@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bill;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BillController extends Controller
 {
@@ -15,19 +16,8 @@ class BillController extends Controller
 
     public function index(Request $request)
     {
-        $authId = $request->query('auth_id', auth()->id());
-
-        $billsQuery = Bill::with(['buyer', 'seller', 'product']);
-
-        if ($authId) {
-            $billsQuery->where(function ($query) use ($authId) {
-                $query->where('buyer_id', $authId)
-                    ->orWhere('seller_id', $authId);
-            });
-        }
-
-        $bills = $billsQuery->get();
-
+        $user_id = Auth::user()->id;
+        $bills = Bill::where('buyer_id', $user_id)->with(['buyer', 'seller', 'product'])->get();
         return response()->json($bills);
     }
 
