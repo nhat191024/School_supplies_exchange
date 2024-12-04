@@ -21,5 +21,6 @@ Route::apiResource('users', UserController::class);
 Route::post('/users/profile', [UserController::class, 'update'])->middleware('auth:sanctum');
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);
-Route::apiResource('bills', BillController::class);
+// Route::apiResource('bills', BillController::class);
+Route::get('/bills/{type}', [BillController::class, 'index']);
 Route::apiResource('reviews', ReviewController::class);
