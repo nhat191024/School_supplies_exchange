@@ -17,6 +17,9 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const user_id = localStorage.getItem('id');
 
 const product = ref({
     category: '',
@@ -42,9 +45,16 @@ const conditions = ref([
 
 const api = "https://phuctph.name.vn/api/products";
 const submitForm = async () => {
+
+    const buyer_id = localStorage.getItem('id');
+    if (!buyer_id || buyer_id == null) {
+        alert('Vui lòng đăng nhập để đăng sản phẩm');
+        return router.push('/profile');
+    }
+
     const productData = {
         category_id: product.value.category.value,
-        user_id: "1",
+        user_id: user_id,
         name: product.value.name,
         purchase_date: product.value.purchaseDate,
         condition: product.value.condition.value,
