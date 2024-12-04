@@ -14,11 +14,19 @@ class BillController extends Controller
         return response()->json($bill, 201);
     }
 
-    public function index(Request $request)
+    public function index($type)
     {
         $user_id = Auth::user()->id;
-        $bills = Bill::where('buyer_id', $user_id)->with(['buyer', 'seller', 'product'])->get();
-        return response()->json($bills);
+        if ($type == 1) {
+            $bills = Bill::where('buyer_id', $user_id)->with(['buyer', 'seller', 'product'])->get();
+            return response()->json($bills);
+        } else if ($type == 2) {
+            $bills = Bill::where('seller_id', $user_id)->with(['buyer', 'seller', 'product'])->get();
+            return response()->json($bills);
+        } else {
+            $bill = Bill::all();
+            return response()->json($bill);
+        }
     }
 
     public function show($id)
