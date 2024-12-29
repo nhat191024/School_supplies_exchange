@@ -1,5 +1,6 @@
 {
   "appId": "org.capacitor.quasar.app",
   "appName": "School supplies exchange",
-  "webDir": "www"
+  "webDir": "www",
+  "bundledWebRuntime": false
 }
