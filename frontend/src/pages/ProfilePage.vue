@@ -54,19 +54,55 @@
         </div>
     </div>
 
-    <div v-else class="login-form">
-        <h5>Đăng nhập</h5>
-        <q-form @submit.prevent="onLogin" class="form-content">
-            <q-input v-model="username" label="Username" outlined class="input" />
-            <q-input v-model="password" label="Password" type="password" outlined class="input" />
-            <q-btn type="submit" label="Login" color="primary" />
-        </q-form>
-        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div v-else class="auth-forms">
+        <div v-if="showLoginForm" class="login-form">
+            <h5>Đăng nhập</h5>
+            <q-form @submit.prevent="onLogin" class="form-content">
+                <q-input v-model="username" label="Username" outlined class="input" />
+                <q-input v-model="password" label="Password" type="password" outlined class="input" />
+                <q-btn type="submit" label="Login" color="primary" />
+            </q-form>
+            <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+            <q-btn flat @click="toggleForm">Đăng ký</q-btn>
+        </div>
+        <div v-else class="register-form">
+            <h5>Đăng ký</h5>
+            <q-form @submit.prevent="onRegister" class="form-content">
+                <q-input v-model="registerName" label="Name" outlined class="input"
+                    :rules="[val => !!val || 'Name is required', val => val.length <= 255 || 'Name must be less than 255 characters']" />
+                <q-input v-model="registerEmail" label="Email" type="email" outlined class="input"
+                    :rules="[val => !!val || 'Email is required', val => /.+@.+\..+/.test(val) || 'Email must be valid', val => val.length <= 255 || 'Email must be less than 255 characters']" />
+                <q-input v-model="registerPassword" label="Password" type="password" outlined class="input"
+                    :rules="[val => !!val || 'Password is required', val => val.length >= 8 || 'Password must be at least 8 characters']" />
+                <q-input v-model="registerPasswordConfirmation" label="Confirm Password" type="password" outlined
+                    class="input" :rules="confirmPasswordRules" />
+                <q-input v-model="registerSchool" label="School" outlined class="input"
+                    :rules="[val => val.length <= 255 || 'School must be less than 255 characters']" />
+                <q-input v-model="registerAddress" label="Address" outlined class="input"
+                    :rules="[val => val.length <= 255 || 'Address must be less than 255 characters']" />
+                <q-input v-model="registerPhone" label="Phone" outlined class="input"
+                    :rules="[val => val.length <= 15 || 'Phone must be less than 15 characters']" />
+                <q-btn type="submit" label="Register" color="primary" />
+            </q-form>
+            <div v-if="registerErrorMessage" class="error-message">{{ registerErrorMessage }}</div>
+            <q-btn flat @click="toggleForm">Đăng nhập</q-btn>
+        </div>
     </div>
+
+    <q-dialog v-model="showSuccessDialog">
+        <q-card>
+            <q-card-section>
+                <div class="text-h6">Đăng ký thành công</div>
+            </q-card-section>
+            <q-card-actions align="right">
+                <q-btn flat label="OK" color="primary" @click="onSuccessDialogOk" />
+            </q-card-actions>
+        </q-card>
+    </q-dialog>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 const rating = ref(0);
@@ -77,7 +113,28 @@ const name = ref('');
 const username = ref('');
 const password = ref('');
 const errorMessage = ref('');
-const isLogin = ref(true);
+const isLogin = ref(false);
+
+const registerName = ref('');
+const registerEmail = ref('');
+const registerPassword = ref('');
+const registerPasswordConfirmation = ref('');
+const registerSchool = ref('');
+const registerAddress = ref('');
+const registerPhone = ref('');
+const registerErrorMessage = ref('');
+
+const showLoginForm = ref(true);
+const showSuccessDialog = ref(false);
+
+const confirmPasswordRules = computed(() => [
+    val => !!val || 'Confirm Password is required',
+    val => val === registerPassword.value || 'Passwords must match'
+]);
+
+function toggleForm() {
+    showLoginForm.value = !showLoginForm.value;
+}
 
 async function onLogin() {
     errorMessage.value = '';
@@ -110,6 +167,42 @@ async function onLogin() {
     }
 };
 
+async function onRegister() {
+    registerErrorMessage.value = '';
+    try {
+        const response = await fetch('https://phuctph.name.vn/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: registerName.value,
+                email: registerEmail.value,
+                password: registerPassword.value,
+                password_confirmation: registerPasswordConfirmation.value,
+                school: registerSchool.value,
+                address: registerAddress.value,
+                phone: registerPhone.value,
+                avatar: "avatars/alice.jpg",
+                role: '0',
+            }),
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+            const errorData = await response.text();
+            console.error('Error:', errorData);
+            registerErrorMessage.value = errorData;
+            throw new Error(errorData);
+        } else {
+            showSuccessDialog.value = true;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        registerErrorMessage.value = "Đăng ký thất bại";
+    }
+}
+
 async function getProfile() {
     const temporaryToken = localStorage.getItem('token');
     try {
@@ -138,7 +231,7 @@ async function getProfile() {
 
 function logout() {
     localStorage.removeItem('token');
-    localStorage.removeItem('id');3
+    localStorage.removeItem('id'); 3
     isLogin.value = false;
 }
 
@@ -151,6 +244,13 @@ function checkTokenInLocalStorage() {
         getProfile();
         isLogin.value = true;
     }
+}
+
+function onSuccessDialogOk() {
+    showSuccessDialog.value = false;
+    username.value = registerEmail.value;
+    password.value = registerPassword.value;
+    onLogin();
 }
 
 checkTokenInLocalStorage();
@@ -206,12 +306,15 @@ const goToHistory = (type) => {
     justify-content: space-between;
 }
 
-.login-form {
+.auth-forms {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-around;
     margin-top: 100px;
+}
+
+.login-form,
+.register-form {
+    width: 45%;
 }
 
 .input,
