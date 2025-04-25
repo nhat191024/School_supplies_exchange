@@ -34,7 +34,7 @@
             <p class="item-title">Tiện ích</p>
             <q-list bordered class="list">
                 <q-item clickable>
-                    <q-item-section>Tin đã đăng</q-item-section>
+                    <q-item-section clickable @click="goToPostedProducts()">Sản phẩm đã đăng</q-item-section>
                 </q-item>
                 <q-item clickable>
                     <q-item-section>Hàng đã lưu</q-item-section>
@@ -139,7 +139,7 @@ function toggleForm() {
 async function onLogin() {
     errorMessage.value = '';
     try {
-        const response = await fetch('https://phuctph.name.vn/api/login', {
+        const response = await fetch('http://192.168.1.4:8000/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -170,7 +170,7 @@ async function onLogin() {
 async function onRegister() {
     registerErrorMessage.value = '';
     try {
-        const response = await fetch('https://phuctph.name.vn/api/users', {
+        const response = await fetch('http://192.168.1.4:8000/api/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -206,7 +206,7 @@ async function onRegister() {
 async function getProfile() {
     const temporaryToken = localStorage.getItem('token');
     try {
-        const response = await fetch('https://phuctph.name.vn/api/me', {
+        const response = await fetch('http://192.168.1.4:8000/api/me', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -257,6 +257,10 @@ checkTokenInLocalStorage();
 
 const goToHistory = (type) => {
     router.push('/history/' + type);
+};
+
+const goToPostedProducts = () => {
+    router.push('/posted-products');
 };
 </script>
 <style scoped>
