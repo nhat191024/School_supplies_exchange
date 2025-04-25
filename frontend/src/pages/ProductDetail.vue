@@ -2,7 +2,7 @@
     <div class="product-details">
         <q-btn flat icon="arrow_back" label="Quay lại" @click="goBack" class="back-button" />
         <div class="product-header">
-            <img src="/images/slide/slider-1.jpg" class="thumbnail">
+            <img :src="product.image ? product.image : '/images/slide/slider-1.jpg'" class="thumbnail">
         </div>
         <div class="product-info">
             <div class="product-title">
@@ -29,7 +29,7 @@
                 <div class="time">{{ product.created_at }}</div>
             </div>
             <div class="seller-info">
-                <div class="seller-name">User 1</div>
+                <div class="seller-name">{{ product.user }}</div>
                 <div class="seller-details">
                     <span>Phản hồi: {{ product.seller?.feedback }}</span> | <span>{{ product.seller?.itemsExchanged }}
                         đồ
@@ -59,7 +59,7 @@ const product = ref({});
 
 const fetchProduct = async (id) => {
     try {
-        const response = await fetch(`https://phuctph.name.vn/api/products/${id}`);
+        const response = await fetch(`http://192.168.1.4:8000/api/products/${id}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -72,7 +72,7 @@ const fetchProduct = async (id) => {
 
 const fetchCategory = async (id) => {
     try {
-        const response = await fetch(`https://phuctph.name.vn/api/categories/${id}`);
+        const response = await fetch(`http://192.168.1.4:8000/api/categories/${id}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
