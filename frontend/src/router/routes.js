@@ -10,6 +10,7 @@ const routes = [
       { path: '/paid/:id', component: () => import('pages/PayPage.vue'), },
       { path: '/history/:type', component: () => import('pages/HistoryPage.vue') },
       { path: '/posted-products', component: () => import('pages/ProductHistoryPage.vue'), },
+      { path: '/edit-product/:id', component: () => import('pages/EditProductPage.vue'), },
     ]
   },
 
