@@ -26,10 +26,16 @@ class ProductController extends Controller
         return response()->json($product, 201);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::where('status', 1)->with('user', 'category')->get();
-        $products = $products->map(function ($product) {
+        $query = $request->query('query');
+        $productsQuery = Product::where('status', 1)->with('user', 'category');
+
+        if ($query) {
+            $productsQuery->where('category_id', $query);
+        }
+
+        $products = $productsQuery->get()->map(function ($product) {
             return [
                 'id' => $product->id,
                 'category_id' => $product->category_id,
