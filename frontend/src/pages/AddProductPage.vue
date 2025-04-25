@@ -1,7 +1,7 @@
 <template>
     <q-page class="add-product-page">
         <p class="page-title">Thêm Sản Phẩm Mới</p>
-        <q-form @submit.prevent="submitForm">
+        <q-form @submit.prevent="submitProductForm">
             <q-input filled v-model="product.name" label="Tên sản phẩm" required />
             <q-select filled v-model="product.category" :options="categories" option-value="value" option-label="label"
                 label="Danh mục" required />
@@ -10,6 +10,11 @@
                 label="Tình trạng" required />
             <q-input filled v-model="product.purchasePrice" type="number" label="Giá mua vào" required />
             <q-input filled v-model="product.description" type="textarea" label="Mô tả" required />
+            <q-file filled v-model="product.image" label="Ảnh sản phẩm" accept="image/*" style="margin-top: 20px;">
+                <template v-slot:prepend>
+                    <q-icon name="attach_file" />
+                </template>
+            </q-file>
             <q-btn type="submit" label="Thêm sản phẩm" color="primary" style="margin-top: 20px;" />
         </q-form>
     </q-page>
@@ -18,7 +23,10 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
+
 const router = useRouter();
+const $q = useQuasar();
 const user_id = localStorage.getItem('id');
 
 const product = ref({
@@ -27,7 +35,8 @@ const product = ref({
     purchaseDate: '',
     condition: '',
     purchasePrice: '',
-    description: ''
+    description: '',
+    image: null
 });
 
 const categories = ref([
@@ -43,32 +52,33 @@ const conditions = ref([
     { label: 'Cũ', value: '0' }
 ]);
 
-const api = "https://phuctph.name.vn/api/products";
-const submitForm = async () => {
-
+const api = "http://192.168.1.4:8000/api/products";
+const submitProductForm = async () => {
     const buyer_id = localStorage.getItem('id');
     if (!buyer_id || buyer_id == null) {
         alert('Vui lòng đăng nhập để đăng sản phẩm');
         return router.push('/profile');
     }
 
-    const productData = {
-        category_id: product.value.category.value,
-        user_id: user_id,
-        name: product.value.name,
-        purchase_date: product.value.purchaseDate,
-        condition: product.value.condition.value,
-        price: product.value.purchasePrice,
-        description: product.value.description,
-        status: "1",
-    };
+    const formData = new FormData();
+    formData.append('category_id', product.value.category.value);
+    formData.append('user_id', user_id);
+    formData.append('name', product.value.name);
+    formData.append('purchase_date', product.value.purchaseDate);
+    formData.append('condition', product.value.condition.value);
+    formData.append('price', product.value.purchasePrice);
+    formData.append('description', product.value.description);
+    formData.append('status', "1");
+
+    if (product.value.image instanceof File) {
+        formData.append('image', product.value.image);
+    }
+
     try {
+        console.log(formData);
         const response = await fetch(api, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(productData)
+            body: formData
         });
 
         if (!response.ok) {
@@ -77,9 +87,33 @@ const submitForm = async () => {
 
         const data = await response.json();
         console.log('Product added:', data);
+
+        // Show success notification using $q.notify
+        $q.notify({
+            type: 'positive',
+            'badgePosition': 'top',
+            message: 'Sản phẩm đã được thêm thành công!',
+            timeout: 2000
+        });
+
+        // Reset form
+        product.value = {
+            category: '',
+            name: '',
+            purchaseDate: '',
+            condition: '',
+            purchasePrice: '',
+            description: '',
+            image: null
+        };
     } catch (error) {
         console.error('Error adding product:', error);
-        console.log('Product data:', productData);
+        // Optionally add error notification
+        $q.notify({
+            type: 'negative',
+            message: 'Có lỗi xảy ra khi thêm sản phẩm.',
+            timeout: 2000
+        });
     }
 };
 </script>
