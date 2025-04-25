@@ -3,8 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: School-supplies-exchange-backend
-    container_name: School_supplies_exchange-backend
+    image: school-supplies-exchange-backend
+    container_name: school_supplies_exchange-backend
     restart: unless-stopped
     ports:
       - "10003:80"
