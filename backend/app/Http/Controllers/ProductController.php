@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -14,7 +14,10 @@ class ProductController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('images', 'public');
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/products'), $imageName);
+            $path = 'images/products/' . $imageName;
             $data['image'] = $path;
         }
 
@@ -56,12 +59,14 @@ class ProductController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('image')) {
-            // Xóa ảnh cũ nếu có
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
+            if (File::exists($product->image)) {
+                File::delete($product->image);
             }
 
-            $path = $request->file('image')->store('images', 'public');
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/products'), $imageName);
+            $path = 'images/products/' . $imageName;
             $data['image'] = $path;
         }
 
