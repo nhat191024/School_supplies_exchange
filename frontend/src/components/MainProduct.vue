@@ -4,7 +4,7 @@
         <div class="product-container">
             <q-card class="my-card" v-for="(product, index) in products" :key="index"
                 @click="goToProductDetail(product.id)">
-                <img src="/images/slide/slider-1.jpg" class="thumbnail">
+                <img :src="product.image ? product.image : '/images/slide/slider-1.jpg'" class="thumbnail">
 
                 <q-card-section>
                     <div class="text-h6">{{ product.name }}</div>
@@ -29,7 +29,7 @@ function goToProductDetail(id) {
     router.push(`/product/${id}`);
 }
 
-const api = "https://phuctph.name.vn/api/products";
+const api = "http://192.168.1.4:8000/api/products";
 
 const fetchProducts = async () => {
     try {
