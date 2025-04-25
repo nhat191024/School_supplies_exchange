@@ -99,4 +99,29 @@ class ProductController extends Controller
         $product->delete();
         return response()->json(null, 204);
     }
+
+    public function postByUser(Request $request)
+    {
+        $userId = $request->user()->id;
+        $products = Product::where('user_id', $userId)->with('user', 'category')->get();
+
+        $products = $products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'category' => $product->category->name,
+                'user' => $product->user->name,
+                'name' => $product->name,
+                'purchase_date' => $product->purchase_date,
+                'condition' => $product->condition,
+                'price' => $product->price,
+                'description' => $product->description,
+                'status' => $product->status,
+                'created_at' => $product->created_at,
+                'updated_at' => $product->updated_at,
+                'image' => $product->image ? url($product->image) : null,
+            ];
+        });
+
+        return response()->json($products);
+    }
 }
