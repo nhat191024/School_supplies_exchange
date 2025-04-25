@@ -29,6 +29,23 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
+        $products = $products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'category_id' => $product->category_id,
+                'user' => $product->user->name,
+                'name' => $product->name,
+                'purchase_date' => $product->purchase_date,
+                'condition' => $product->condition,
+                'price' => $product->price,
+                'description' => $product->description,
+                'status' => $product->status,
+                'created_at' => $product->created_at,
+                'updated_at' => $product->updated_at,
+                'image' => $product->image ? url($product->image) : null,
+            ];
+        });
+
         return response()->json($products);
     }
 
@@ -48,6 +65,7 @@ class ProductController extends Controller
             'status' => $product->status,
             'created_at' => $product->created_at,
             'updated_at' => $product->updated_at,
+            'image' => $product->image ? url($product->image) : null,
         ];
 
         return response()->json($productData);
