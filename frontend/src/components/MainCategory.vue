@@ -1,9 +1,15 @@
 <template>
     <div class="category-container">
-        <div class="category-item" v-for="(cat, index) in modelValue" :key="index">
-            <q-btn push color="red-10" class="q-py-sm">
+        <div class="category-item">
+            <q-btn push color="red-10" class="q-py-sm" @click="navigateToCategory(null)">
                 <div class="row items-center no-wrap">
-                    <q-icon size="2em" :name="cat.icon" class="q-mr-sm" />
+                    <div style="text-wrap: nowrap;">Home</div>
+                </div>
+            </q-btn>
+        </div>
+        <div class="category-item" v-for="(cat, index) in modelValue" :key="index">
+            <q-btn push color="red-10" class="q-py-sm" @click="navigateToCategory(cat.id)">
+                <div class="row items-center no-wrap">
                     <div style="text-wrap: nowrap;">{{ cat.name }}</div>
                 </div>
             </q-btn>
@@ -13,6 +19,7 @@
 
 <script setup>
 import { toRefs } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
     modelValue: {
@@ -24,7 +31,13 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 const { modelValue } = toRefs(props);
 
+const router = useRouter();
+
+function navigateToCategory(categoryId) {
+    router.push({ path: `/categoryId`, query: { category: categoryId } });
+}
+
 defineOptions({
     name: 'MainCategory'
-})
+});
 </script>
