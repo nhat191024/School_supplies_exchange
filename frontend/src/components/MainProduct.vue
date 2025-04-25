@@ -19,10 +19,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
+const route = useRoute();
 const products = ref([]);
 
 function goToProductDetail(id) {
@@ -31,9 +32,10 @@ function goToProductDetail(id) {
 
 const api = "http://192.168.1.4:8000/api/products";
 
-const fetchProducts = async () => {
+const fetchProducts = async (category = null) => {
     try {
-        const response = await fetch(api);
+        const url = category ? `${api}?query=${category}` : api;
+        const response = await fetch(url);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -45,7 +47,11 @@ const fetchProducts = async () => {
 };
 
 onMounted(() => {
-    fetchProducts();
+    fetchProducts(route.query.category);
+});
+
+watch(() => route.query.category, (newCategory) => {
+    fetchProducts(newCategory);
 });
 
 defineOptions({
