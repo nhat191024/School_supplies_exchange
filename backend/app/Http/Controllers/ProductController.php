@@ -28,7 +28,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Product::all();
+        $products = Product::where('status', 1)->with('user', 'category')->get();
         $products = $products->map(function ($product) {
             return [
                 'id' => $product->id,
@@ -89,6 +89,7 @@ class ProductController extends Controller
         }
 
         $product->update($data);
+        $product->save();
 
         return response()->json($product);
     }
