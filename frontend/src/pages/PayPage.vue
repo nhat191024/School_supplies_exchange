@@ -50,7 +50,7 @@ const product = ref({});
 
 const fetchProduct = async (id) => {
     try {
-        const response = await fetch(`https://phuctph.name.vn/api/products/${id}`);
+        const response = await fetch(`http://192.168.1.4:8000/api/products/${id}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -74,7 +74,7 @@ async function placeOrder() {
     };
 
     try {
-        const response = await fetch('https://phuctph.name.vn/api/bills', {
+        const response = await fetch('http://192.168.1.4:8000/api/bills', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ onMounted(async () => {
     console.log("buyer_id");
     console.log(buyer_id);
     console.log(product.value.user_id);
-    
+
     if (buyer_id == product.value.user_id) {
         alert('Không thể trao đổi sản phẩm với chính mình');
         router.push('/');
