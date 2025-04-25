@@ -78,7 +78,7 @@ const fetchBill = async () => {
     const temporaryToken = localStorage.getItem('token');
     const type = route.params.type;
     try {
-        const response = await fetch(`https://phuctph.name.vn/api/bills/${type}`, {
+        const response = await fetch(`http://192.168.1.4:8000/api/bills/${type}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
