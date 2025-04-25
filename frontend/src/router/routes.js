@@ -11,6 +11,7 @@ const routes = [
       { path: '/history/:type', component: () => import('pages/HistoryPage.vue') },
       { path: '/posted-products', component: () => import('pages/ProductHistoryPage.vue'), },
       { path: '/edit-product/:id', component: () => import('pages/EditProductPage.vue'), },
+      { path: '/categoryId', component: () => import('pages/IndexPage.vue') },
     ]
   },
 
