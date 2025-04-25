@@ -31,8 +31,23 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::findOrFail($id);
-        return response()->json($product);
+        $product = Product::findOrFail($id)->load('user');
+
+        $productData = [
+            'id' => $product->id,
+            'category_id' => $product->category_id,
+            'user' => $product->user->name,
+            'name' => $product->name,
+            'purchase_date' => $product->purchase_date,
+            'condition' => $product->condition,
+            'price' => $product->price,
+            'description' => $product->description,
+            'status' => $product->status,
+            'created_at' => $product->created_at,
+            'updated_at' => $product->updated_at,
+        ];
+
+        return response()->json($productData);
     }
 
     public function update(Request $request, $id)
