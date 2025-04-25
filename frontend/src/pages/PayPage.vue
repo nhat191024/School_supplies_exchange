@@ -50,7 +50,7 @@ const product = ref({});
 
 const fetchProduct = async (id) => {
     try {
-        const response = await fetch(`http://192.168.1.4:8000/api/products/${id}`);
+        const response = await fetch(`https://school-supplies-exchange.taiyo.space/api/products/${id}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -74,7 +74,7 @@ async function placeOrder() {
     };
 
     try {
-        const response = await fetch('http://192.168.1.4:8000/api/bills', {
+        const response = await fetch('https://school-supplies-exchange.taiyo.space/api/bills', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

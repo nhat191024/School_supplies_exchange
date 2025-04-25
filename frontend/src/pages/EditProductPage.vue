@@ -66,7 +66,7 @@ const status = ref([
     { label: 'Ẩn', value: '0' }
 ])
 
-const api = "http://192.168.1.4:8000/api/products";
+const api = "https://school-supplies-exchange.taiyo.space/api/products";
 
 const fetchProduct = async (id) => {
     try {

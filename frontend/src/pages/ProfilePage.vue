@@ -139,7 +139,7 @@ function toggleForm() {
 async function onLogin() {
     errorMessage.value = '';
     try {
-        const response = await fetch('http://192.168.1.4:8000/api/login', {
+        const response = await fetch('https://school-supplies-exchange.taiyo.space/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -170,7 +170,7 @@ async function onLogin() {
 async function onRegister() {
     registerErrorMessage.value = '';
     try {
-        const response = await fetch('http://192.168.1.4:8000/api/users', {
+        const response = await fetch('https://school-supplies-exchange.taiyo.space/api/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -206,7 +206,7 @@ async function onRegister() {
 async function getProfile() {
     const temporaryToken = localStorage.getItem('token');
     try {
-        const response = await fetch('http://192.168.1.4:8000/api/me', {
+        const response = await fetch('https://school-supplies-exchange.taiyo.space/api/me', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

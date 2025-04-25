@@ -52,7 +52,7 @@ const conditions = ref([
     { label: 'Cũ', value: '0' }
 ]);
 
-const api = "http://192.168.1.4:8000/api/products";
+const api = "https://school-supplies-exchange.taiyo.space/api/products";
 const submitProductForm = async () => {
     const buyer_id = localStorage.getItem('id');
     if (!buyer_id || buyer_id == null) {

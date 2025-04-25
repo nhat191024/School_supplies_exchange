@@ -19,7 +19,7 @@ const category = ref([
 ]);
 
 onMounted(() => {
-  fetch('http://192.168.1.4:8000/api/categories')
+  fetch('https://school-supplies-exchange.taiyo.space/api/categories')
     .then(response => response.json())
     .then(data => {
       category.value = data;

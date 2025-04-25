@@ -57,7 +57,7 @@ const formatPrice = (price) => {
 const fetchProducts = async () => {
     const temporaryToken = localStorage.getItem('token');
     try {
-        const response = await fetch(`http://192.168.1.4:8000/api/products/user/postProduct`, {
+        const response = await fetch(`https://school-supplies-exchange.taiyo.space/api/products/user/postProduct`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
