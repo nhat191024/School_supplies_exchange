@@ -7,7 +7,7 @@ services:
     container_name: school_supplies_exchange-backend
     restart: unless-stopped
     ports:
-      - "10003:80"
+      - "10000:80"
     volumes:
       - .:/var/www/html
       - /var/www/html/vendor
