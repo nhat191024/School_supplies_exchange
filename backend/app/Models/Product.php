@@ -21,19 +21,16 @@ class Product extends Model
         'purchase_date'
     ];
 
-    // Quan hệ với User
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Quan hệ với Category
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    // Quan hệ với Review
     public function reviews()
     {
         return $this->hasMany(Review::class);
