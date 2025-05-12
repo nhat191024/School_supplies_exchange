@@ -41,10 +41,14 @@
 import { ref, onMounted } from 'vue'
 import { format } from 'date-fns';
 import { useRouter, useRoute } from 'vue-router';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
 const router = useRouter();
 const route = useRoute();
 const title = ref('');
 const products = ref([])
+const temporaryToken = $q.localStorage.getItem('token');
 
 const formatDate = (dateString) => {
     return format(new Date(dateString), 'dd/MM/yyyy HH:mm');
@@ -55,7 +59,6 @@ const formatPrice = (price) => {
 }
 
 const fetchProducts = async () => {
-    const temporaryToken = localStorage.getItem('token');
     try {
         const response = await fetch(`https://school-supplies-exchange.taiyo.space/api/products/user/postProduct`, {
             method: 'GET',
