@@ -29,7 +29,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = $request->query('query');
-        $productsQuery = Product::where('status', 1)->with('user', 'category');
+        $productsQuery = Product::where('status', 1)->with('user', 'category', 'reviews', 'reviews.buyer');
 
         if ($query) {
             $productsQuery->where('category_id', $query);
@@ -49,6 +49,15 @@ class ProductController extends Controller
                 'created_at' => $product->created_at,
                 'updated_at' => $product->updated_at,
                 'image' => $product->image ? url($product->image) : null,
+                'reviews' => $product->reviews->map(function ($review) {
+                    return [
+                        'id' => $review->id,
+                        'user' => $review->buyer->name,
+                        'rating' => $review->rating,
+                        'comment' => $review->comment,
+                        'created_at' => $review->created_at,
+                    ];
+                }),
             ];
         });
 
@@ -57,7 +66,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::findOrFail($id)->load('user');
+        $product = Product::findOrFail($id)->load('user', 'reviews', 'reviews.buyer');
 
         $productData = [
             'id' => $product->id,
@@ -72,6 +81,15 @@ class ProductController extends Controller
             'created_at' => $product->created_at,
             'updated_at' => $product->updated_at,
             'image' => $product->image ? url($product->image) : null,
+            'reviews' => $product->reviews->map(function ($review) {
+                return [
+                    'id' => $review->id,
+                    'user' => $review->buyer->name,
+                    'rating' => $review->rating,
+                    'comment' => $review->comment,
+                    'created_at' => $review->created_at,
+                ];
+            }),
         ];
 
         return response()->json($productData);
