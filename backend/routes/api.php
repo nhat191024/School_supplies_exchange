@@ -33,4 +33,4 @@ Route::get('/products/user/postProduct', [ProductController::class, 'postByUser'
 
 Route::get('/bills/{type}', [BillController::class, 'index'])->middleware('auth:sanctum');
 
-Route::apiResource('reviews', ReviewController::class);
+Route::post('/reviews', [ReviewController::class, 'store'])->middleware('auth:sanctum');
