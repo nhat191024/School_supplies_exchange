@@ -40,7 +40,7 @@
                     <q-item-section>Hàng đã lưu</q-item-section>
                 </q-item>
                 <q-item clickable>
-                    <q-item-section>Đánh giá</q-item-section>
+                    <q-item-section clickable @click="goToHistory(4)">Đánh giá</q-item-section>
                 </q-item>
             </q-list>
         </div>
@@ -104,6 +104,9 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
 const router = useRouter();
 const rating = ref(0);
 const followers = ref(0);
@@ -158,7 +161,9 @@ async function onLogin() {
             throw new Error(errorData);
         } else {
             isLogin.value = true;
-            localStorage.setItem('token', data.access_token);
+            $q.localStorage.set('token', data.access_token);
+
+            console.log('token saved: ', $q.localStorage.getItem('token'));
             getProfile();
         }
     } catch (error) {
@@ -204,7 +209,7 @@ async function onRegister() {
 }
 
 async function getProfile() {
-    const temporaryToken = localStorage.getItem('token');
+    const temporaryToken = $q.localStorage.getItem('token');
     try {
         const response = await fetch('https://school-supplies-exchange.taiyo.space/api/me', {
             method: 'GET',
@@ -217,12 +222,14 @@ async function getProfile() {
         const data = await response.json();
         if (!response.ok) {
             const errorData = await response.text();
-            console.error('Error:', errorData);
             errorMessage.value = errorData;
+
+            logout();
+
             throw new Error(errorData);
         } else {
             name.value = data.name;
-            localStorage.setItem('id', data.id);
+            $q.localStorage.setItem('id', data.id);
         }
     } catch (error) {
         console.error('Error:', error);
@@ -230,13 +237,13 @@ async function getProfile() {
 }
 
 function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('id'); 3
+    $q.localStorage.clear();
     isLogin.value = false;
 }
 
 function checkTokenInLocalStorage() {
-    const token = localStorage.getItem('token');
+    const token = $q.localStorage.getItem('token');
+    console.log("token: ", token);
     if (token == "undefined" || token == null) {
         console.log('not login');
         isLogin.value = false;
