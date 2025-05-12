@@ -44,6 +44,22 @@
             <q-btn label="Chat" color="primary" />
             <q-btn label="Trao đổi" color="green" @click="goToPaid(product.id)" />
         </div>
+        <div class="comments-section">
+            <h3>Đánh giá</h3>
+            <div v-if="product.reviews && product.reviews.length > 0">
+                <div v-for="review in product.reviews" :key="review.id" class="comment">
+                    <div class="comment-header">
+                        <span class="comment-user">{{ review.user }}</span>
+                        <span class="comment-rating">Rating: {{ review.rating }}/5</span>
+                    </div>
+                    <p class="comment-text">{{ review.comment }}</p>
+                    <div class="comment-date">{{ formatDate(review.created_at) }}</div>
+                </div>
+            </div>
+            <div v-else>
+                <p>Chưa có đánh giá nào.</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -56,10 +72,11 @@ const router = useRouter();
 const route = useRoute();
 const selectedImage = ref(0);
 const product = ref({});
+const api = ref('https://school-supplies-exchange.taiyo.space/api/');
 
 const fetchProduct = async (id) => {
     try {
-        const response = await fetch(`https://school-supplies-exchange.taiyo.space/api/products/${id}`);
+        const response = await fetch(`${api.value}products/${id}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -72,12 +89,13 @@ const fetchProduct = async (id) => {
 
 const fetchCategory = async (id) => {
     try {
-        const response = await fetch(`https://school-supplies-exchange.taiyo.space/api/categories/${id}`);
+        const response = await fetch(`${api.value}categories/${id}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
         product.value.category_name = data.name;
+        console.log(product.value);
     } catch (error) {
         console.error('Error fetching category:', error);
     }
@@ -97,6 +115,10 @@ const goBack = () => {
 function goToPaid(id) {
     router.push(`/paid/${id}`);
 }
+
+const formatDate = (dateString) => {
+    return format(new Date(dateString), 'dd/MM/yyyy');
+};
 
 </script>
 
@@ -180,5 +202,43 @@ function goToPaid(id) {
     display: flex;
     align-items: center;
     padding: 16px;
+}
+
+.comments-section {
+    margin-top: 20px;
+    padding: 16px;
+    border-top: 1px solid #ddd;
+}
+
+.comments-section h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.comment {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.comment-text {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.comment-date {
+    font-size: 12px;
+    color: #888;
 }
 </style>
