@@ -28,11 +28,11 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $query = $request->query('query');
+        $categoryId = $request->query('category');
         $productsQuery = Product::where('status', 1)->with('user', 'category', 'reviews', 'reviews.buyer');
 
-        if ($query) {
-            $productsQuery->where('category_id', $query);
+        if ($categoryId) {
+            $productsQuery->where('category_id', $categoryId);
         }
 
         $products = $productsQuery->get()->map(function ($product) {
