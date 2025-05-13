@@ -2,10 +2,13 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar class="bg-red-10 text-white shadow-2">
-        <q-input bg-color="white" color="red" outlined rounded standout v-model="text" placeholder="Tìm kiếm sản phẩm"
-          class="q-my-sm">
+        <q-input bg-color="white" color="red" outlined rounded standout v-model="searchText"
+          placeholder="Tìm kiếm sản phẩm" class="q-my-sm" style="width: 300px;" @input="onSearch">
           <template v-slot:prepend>
-            <q-icon name="search" />
+            <q-icon name="search" clickable @click="onSearch" />
+          </template>
+          <template v-slot:append v-if="searchText">
+            <q-icon name="close" clickable @click="clearSearch" />
           </template>
         </q-input>
 
@@ -36,6 +39,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const tab = ref('home')
+const searchText = ref('')
 const router = useRouter()
 
 function goTo(tabName) {
@@ -50,6 +54,15 @@ function goTo(tabName) {
       router.push('/profile')
       break
   }
+}
+
+const onSearch = () => {
+  router.push({ path: '/', query: { search: searchText.value } })
+}
+
+const clearSearch = () => {
+  searchText.value = '';
+  router.push({ path: '/', query: {} });
 }
 
 defineOptions({
