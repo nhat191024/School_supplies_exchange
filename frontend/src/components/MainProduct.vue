@@ -1,7 +1,7 @@
 <template>
     <div style="margin-top: 40px;">
         <p class="product-text-title">Sản Phẩm Hôm nay</p>
-        <div class="product-container">
+        <div v-if="products.length > 0" class="product-container">
             <q-card class="my-card" v-for="(product, index) in products" :key="index"
                 @click="goToProductDetail(product.id)">
                 <img :src="product.image ? product.image : '/images/slide/slider-1.jpg'" class="thumbnail">
@@ -14,6 +14,9 @@
                     <q-btn flat>{{ product.description }}</q-btn>
                 </q-card-actions>
             </q-card>
+        </div>
+        <div v-else class="no-products">
+            <p>Không tìm thấy sản phẩm nào.</p>
         </div>
     </div>
 </template>
@@ -30,11 +33,15 @@ function goToProductDetail(id) {
     router.push(`/product/${id}`);
 }
 
-const api = "https://school-supplies-exchange.taiyo.space/api/products";
+const api = "http://100.109.44.93:8000/api/products";
 
-const fetchProducts = async (category = null) => {
+const fetchProducts = async () => {
     try {
-        const url = category ? `${api}?category=${category}` : api;
+        const searchParam = route.query.search ? `search=${route.query.search}` : '';
+        const categoryParam = route.query.category ? `category=${route.query.category}` : '';
+        const queryParams = [searchParam, categoryParam].filter(Boolean).join('&');
+        const url = queryParams ? `${api}?${queryParams}` : api;
+
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -47,12 +54,10 @@ const fetchProducts = async (category = null) => {
 };
 
 onMounted(() => {
-    fetchProducts(route.query.category);
+    fetchProducts();
 });
 
-watch(() => route.query.category, (newCategory) => {
-    fetchProducts(newCategory);
-});
+watch([() => route.query.search, () => route.query.category], fetchProducts);
 
 defineOptions({
     name: 'MainProduct'
@@ -64,5 +69,12 @@ defineOptions({
     width: 100%;
     height: auto;
     border-radius: 8px;
+}
+
+.no-products {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #888;
 }
 </style>
