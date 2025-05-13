@@ -29,10 +29,17 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $categoryId = $request->query('category');
+        $search = $request->query('search');
         $productsQuery = Product::where('status', 1)->with('user', 'category', 'reviews', 'reviews.buyer');
 
         if ($categoryId) {
             $productsQuery->where('category_id', $categoryId);
+        }
+
+        if ($search) {
+            $productsQuery->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', '%' . $search . '%');
+            });
         }
 
         $products = $productsQuery->get()->map(function ($product) {
