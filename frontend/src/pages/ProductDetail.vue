@@ -16,7 +16,7 @@
                     <q-icon name="check_circle" /> Tình trạng: {{ product.condition == 0 ? 'Mới' : 'Cũ' }}
                 </div>
                 <div class="price">
-                    <q-icon name="attach_money" /> Giá: {{ product.price }} vnđ
+                    <q-icon name="attach_money" /> Giá: {{ formatPrice(product.price) }} vnđ
                 </div>
                 <div class="description">
                     <q-icon name="description" /> Mô tả: {{ product.description }}
@@ -119,6 +119,10 @@ function goToPaid(id) {
 const formatDate = (dateString) => {
     return format(new Date(dateString), 'dd/MM/yyyy');
 };
+
+const formatPrice = (price) => {
+    return new Intl.NumberFormat('vi-VN').format(price);
+}
 
 </script>
 
