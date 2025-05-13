@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar class="bg-red-10 text-white shadow-2">
-        <q-input bg-color="white" color="red" outlined rounded standout v-model="text" placeholder="Placeholder"
+        <q-input bg-color="white" color="red" outlined rounded standout v-model="text" placeholder="Tìm kiếm sản phẩm"
           class="q-my-sm">
           <template v-slot:prepend>
             <q-icon name="search" />
@@ -11,9 +11,8 @@
 
         <q-space />
 
-        <q-icon name="notifications" size="2rem" />
-        <q-space />
-        <q-icon name="forum" size="1.7rem" />
+        <q-icon name="notifications" size="2rem" style="padding-right: 20px;" />
+        <q-icon name="forum" size="1.7rem" style="padding-right: 20px;" />
 
       </q-toolbar>
     </q-header>
