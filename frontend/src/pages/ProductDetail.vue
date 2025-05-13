@@ -24,23 +24,20 @@
             </div>
             <div class="">
                 <div class="location">
-                    <q-icon name="place" /> Hà nội
+                    <q-icon name="place" /> {{ product.address }}
                 </div>
                 <div class="time">{{ product.created_at }}</div>
             </div>
             <div class="seller-info">
                 <div class="seller-name">{{ product.user }}</div>
                 <div class="seller-details">
-                    <span>Phản hồi: {{ product.seller?.feedback }}</span> | <span>{{ product.seller?.itemsExchanged }}
-                        đồ
-                        dùng đã trao lại</span>
                 </div>
                 <div class="seller-activity">Hoạt động 10p trước</div>
             </div>
         </div>
         <div class="actions">
-            <q-btn label="Gọi" color="primary" />
-            <q-btn label="SMS" color="primary" />
+            <q-btn label="Gọi" color="primary" @click="callPhone" />
+            <q-btn label="SMS" color="primary" @click="sendSMS" />
             <q-btn label="Chat" color="primary" />
             <q-btn label="Trao đổi" color="green" @click="goToPaid(product.id)" />
         </div>
@@ -122,7 +119,23 @@ const formatDate = (dateString) => {
 
 const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN').format(price);
-}
+};
+
+const callPhone = () => {
+    if (product.value.phone) {
+        window.location.href = `tel:${product.value.phone}`;
+    } else {
+        console.error('Phone number is not available.');
+    }
+};
+
+const sendSMS = () => {
+    if (product.value.phone) {
+        window.location.href = `sms:${product.value.phone}`;
+    } else {
+        console.error('Phone number is not available.');
+    };
+};
 
 </script>
 
