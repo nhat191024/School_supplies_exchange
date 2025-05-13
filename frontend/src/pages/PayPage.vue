@@ -94,8 +94,10 @@ async function placeOrder() {
 };
 
 const shippingMethods = ref([
-    { label: 'Standard', value: 'standard' },
-    { label: 'Express', value: 'express' },
+    { label: 'Giao hàng tiết kiệm - 20k', value: 'economy' },
+    { label: 'Tiêu chuẩn - 30k', value: 'standard' },
+    { label: 'Giao hàng nhanh - 50k', value: 'fast' },
+    { label: 'Giao hàng hỏa tốc - 60k', value: 'express' },
 ]);
 
 onMounted(async () => {
