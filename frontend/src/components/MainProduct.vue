@@ -34,7 +34,7 @@ const api = "https://school-supplies-exchange.taiyo.space/api/products";
 
 const fetchProducts = async (category = null) => {
     try {
-        const url = category ? `${api}?query=${category}` : api;
+        const url = category ? `${api}?category=${category}` : api;
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error('Network response was not ok');
