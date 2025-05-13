@@ -8,7 +8,7 @@
             <q-input filled v-model="product.purchaseDate" type="date" label="Ngày mua" required />
             <q-select filled v-model="product.condition" :options="conditions" option-value="value" option-label="label"
                 label="Tình trạng" required />
-            <q-input filled v-model="product.purchasePrice" type="number" label="Giá mua vào" required />
+            <q-input filled v-model="product.purchasePrice" type="number" label="Giá" required />
             <q-input filled v-model="product.description" type="textarea" label="Mô tả" required />
             <q-file filled v-model="product.image" label="Ảnh sản phẩm" accept="image/*" style="margin-top: 20px;">
                 <template v-slot:prepend>

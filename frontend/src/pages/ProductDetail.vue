@@ -16,7 +16,7 @@
                     <q-icon name="check_circle" /> Tình trạng: {{ product.condition == 0 ? 'Mới' : 'Cũ' }}
                 </div>
                 <div class="price">
-                    <q-icon name="attach_money" /> Giá mua vào: {{ product.price }} vnđ
+                    <q-icon name="attach_money" /> Giá: {{ product.price }} vnđ
                 </div>
                 <div class="description">
                     <q-icon name="description" /> Mô tả: {{ product.description }}
