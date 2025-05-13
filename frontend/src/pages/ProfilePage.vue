@@ -131,8 +131,8 @@ const showLoginForm = ref(true);
 const showSuccessDialog = ref(false);
 
 const confirmPasswordRules = computed(() => [
-    val => !!val || 'Confirm Password is required',
-    val => val === registerPassword.value || 'Passwords must match'
+    val => !!val || 'Xác nhận mật khẩu là bắt buộc',
+    val => val === registerPassword.value || 'Mật khẩu phải khớp'
 ]);
 
 function toggleForm() {
@@ -223,7 +223,7 @@ async function getProfile() {
         if (!response.ok || !contentType.includes('application/json')) {
             logout();
             const errorData = await response.text();
-            errorMessage.value = "Invalid token or server error";
+            errorMessage.value = "Token không hợp lệ hoặc lỗi máy chủ";
             throw new Error(errorData);
         }
 
