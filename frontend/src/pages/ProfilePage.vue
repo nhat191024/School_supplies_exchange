@@ -244,7 +244,6 @@ function logout() {
 function checkTokenInLocalStorage() {
     const token = $q.localStorage.getItem('token');
     if (token == "undefined" || token == null) {
-        console.log('not login');
         isLogin.value = false;
     } else {
         getProfile();
