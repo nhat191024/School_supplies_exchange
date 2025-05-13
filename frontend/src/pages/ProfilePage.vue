@@ -219,31 +219,30 @@ async function getProfile() {
             },
         });
 
-        const data = await response.json();
-        if (!response.ok) {
-            const errorData = await response.text();
-            errorMessage.value = errorData;
-
+        const contentType = response.headers.get('Content-Type');
+        if (!response.ok || !contentType.includes('application/json')) {
             logout();
-
+            const errorData = await response.text();
+            errorMessage.value = "Invalid token or server error";
             throw new Error(errorData);
-        } else {
-            name.value = data.name;
-            $q.localStorage.setItem('id', data.id);
         }
+
+        const data = await response.json();
+        name.value = data.name;
+        $q.localStorage.setItem('id', data.id);
     } catch (error) {
         console.error('Error:', error);
     }
 }
 
 function logout() {
+    console.log('logout');
     $q.localStorage.clear();
     isLogin.value = false;
 }
 
 function checkTokenInLocalStorage() {
     const token = $q.localStorage.getItem('token');
-    console.log("token: ", token);
     if (token == "undefined" || token == null) {
         console.log('not login');
         isLogin.value = false;
