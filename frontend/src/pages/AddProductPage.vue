@@ -27,7 +27,7 @@ import { useQuasar } from 'quasar';
 
 const router = useRouter();
 const $q = useQuasar();
-const user_id = localStorage.getItem('id');
+const user_id = $q.localStorage.getItem('id');
 
 const product = ref({
     category: '',
@@ -54,8 +54,7 @@ const conditions = ref([
 
 const api = "https://school-supplies-exchange.taiyo.space/api/products";
 const submitProductForm = async () => {
-    const buyer_id = localStorage.getItem('id');
-    if (!buyer_id || buyer_id == null) {
+    if (!user_id || user_id == null) {
         alert('Vui lòng đăng nhập để đăng sản phẩm');
         return router.push('/profile');
     }
