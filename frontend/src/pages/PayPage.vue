@@ -36,9 +36,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useQuasar } from 'quasar';
+
 const router = useRouter();
 const route = useRoute();
-const buyer_id = localStorage.getItem('id');
+const $q = useQuasar();
+const buyer_id = $q.localStorage.getItem('id');
 
 const orderInfo = ref({
     shippingAddress: '',

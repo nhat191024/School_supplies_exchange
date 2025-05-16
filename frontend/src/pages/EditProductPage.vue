@@ -34,7 +34,7 @@ import { useQuasar } from 'quasar';
 const router = useRouter();
 const route = useRoute();
 const $q = useQuasar();
-const user_id = localStorage.getItem('id');
+const user_id = $q.localStorage.getItem('id');
 
 const product = ref({
     id: '',
