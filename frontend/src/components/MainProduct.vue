@@ -33,7 +33,7 @@ function goToProductDetail(id) {
     router.push(`/product/${id}`);
 }
 
-const api = "http://100.109.44.93:8000/api/products";
+const api = "https://school-supplies-exchange.taiyo.space/api/products";
 
 const fetchProducts = async () => {
     try {
