@@ -72,7 +72,7 @@ if (!buyer_id || buyer_id == null) {
 async function placeOrder() {
     const orderData = {
         buyer_id: buyer_id,
-        seller_id: product.value.user_id,
+        seller_id: product.value.seller_id,
         product_id: route.params.id,
     };
 
@@ -109,9 +109,9 @@ onMounted(async () => {
 
     console.log("buyer_id");
     console.log(buyer_id);
-    console.log(product.value.user_id);
+    console.log(product.value.seller_id);
 
-    if (buyer_id == product.value.user_id) {
+    if (buyer_id == product.value.seller_id) {
         alert('Không thể trao đổi sản phẩm với chính mình');
         router.push('/');
     }
