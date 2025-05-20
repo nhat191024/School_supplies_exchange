@@ -55,7 +55,7 @@ class ProductController extends Controller
                 'status' => $product->status,
                 'created_at' => $product->created_at,
                 'updated_at' => $product->updated_at,
-                'image' => $product->image ? url($product->image) : null,
+                'image' => $product->image ? secure_url($product->image) : null,
                 'reviews' => $product->reviews->map(function ($review) {
                     return [
                         'id' => $review->id,
@@ -90,7 +90,7 @@ class ProductController extends Controller
             'status' => $product->status,
             'created_at' => $product->created_at,
             'updated_at' => $product->updated_at,
-            'image' => $product->image ? url($product->image) : null,
+            'image' => $product->image ? secure_url($product->image) : null,
             'reviews' => $product->reviews->map(function ($review) {
                 return [
                     'id' => $review->id,
@@ -153,7 +153,7 @@ class ProductController extends Controller
                 'status' => $product->status,
                 'created_at' => $product->created_at,
                 'updated_at' => $product->updated_at,
-                'image' => $product->image ? url($product->image) : null,
+                'image' => $product->image ? secure_url($product->image) : null,
             ];
         });
 
