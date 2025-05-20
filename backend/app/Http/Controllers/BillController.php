@@ -24,6 +24,9 @@ class BillController extends Controller
             case 2:
                 $bills = Bill::where('seller_id', $user_id)->with(['buyer', 'seller', 'product'])->get();
                 return response()->json($bills);
+            case 3:
+                $bills = Bill::where('buyer_id', $user_id)->with(['buyer', 'seller', 'product'])->get();
+                return response()->json($bills);
             case 4:
                 $bills = Bill::where('buyer_id', $user_id)->with(['buyer', 'seller', 'product', 'review'])->get();
                 return response()->json($bills);
