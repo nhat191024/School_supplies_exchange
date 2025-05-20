@@ -32,5 +32,6 @@ Route::delete('/products/{product}', [ProductController::class, 'destroy']);
 Route::get('/products/user/postProduct', [ProductController::class, 'postByUser'])->middleware('auth:sanctum');
 
 Route::get('/bills/{type}', [BillController::class, 'index'])->middleware('auth:sanctum');
+Route::post('/bills', [BillController::class, 'store']);
 
 Route::post('/reviews', [ReviewController::class, 'store'])->middleware('auth:sanctum');
