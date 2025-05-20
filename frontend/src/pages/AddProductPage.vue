@@ -85,7 +85,6 @@ const submitProductForm = async () => {
         }
 
         const data = await response.json();
-        console.log('Product added:', data);
 
         // Show success notification using $q.notify
         $q.notify({
