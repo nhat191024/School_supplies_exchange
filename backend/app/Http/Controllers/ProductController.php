@@ -78,6 +78,7 @@ class ProductController extends Controller
         $productData = [
             'id' => $product->id,
             'category_id' => $product->category_id,
+            'seller_id' => $product->user->id,
             'user' => $product->user->name,
             'address' => $product->user->address,
             'phone' => $product->user->phone,
